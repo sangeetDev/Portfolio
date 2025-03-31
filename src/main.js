@@ -1,21 +1,15 @@
 import * as THREE from 'three';
 import { GLTFLoader } from './CustomModelLoader/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { TransformControls } from 'three/addons/controls/TransformControls.js';
-import { addTransformcontrols,detachTransformcontrols, hasTransformControlsAttached } from './transformControls/TransformContols.js';
 import { createInfiniteGrid } from './GridHelper/Creategridhelper.js';
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import {RGBELoader} from 'three/addons/loaders/RGBELoader.js';
-import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
-import { ToonShaderHatching } from 'three/addons/shaders/ToonShader.js';
-import { PositionalAudioHelper } from 'three/addons/helpers/PositionalAudioHelper.js';
+
 let scene,Pcamera,Ocamera,renderer,orbitControls,transformControls;
 let nowShowing;
 let activecamera;
