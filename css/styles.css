@@ -206,6 +206,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: opacity 1s ease-in-out;
     opacity:0;
+   
     scrollbar-width: none; 
     -ms-overflow-style: none;
     overflow: auto;
@@ -218,6 +219,7 @@ body {
     position :fixed;
     top:15px;
     left:25px;
+    padding-bottom: 20px;
     
 }
 #menuBar
@@ -602,7 +604,7 @@ body {
     left:20px;
     border-radius: 10px;
     width:900px;
-    height:400px;
+    height:420px;
     box-shadow: 1 4px 6px rgba(0, 0, 0, 0.2);
     background-color: #ffffffee;
     overflow:hidden;
@@ -719,15 +721,14 @@ body {
 }
 #Skills{
     position:absolute;
-    top:1070px;
+    top:1060px;
     right: 20px;
     border-radius: 10px;
     width:900px;
-    height:200px;
+    height:150px;
     box-shadow: 1 4px 6px rgba(0, 0, 0, 0.2);
     background-color: #ffffffee;
     overflow:hidden;
-    margin-bottom: 20px;
 }
 #skills{
     position:absolute;
@@ -736,6 +737,22 @@ body {
     font-size: 24px;
     font-family:  'Arial Narrow';
     font-style:normal;
+}
+#softwares
+{
+   width:50%;
+   height:auto;
+   position: absolute;
+   top:70px;
+   left:18px;
+}
+#gap
+{
+   position:absolute;
+   height:20px;
+   width:100px;
+   background-color: #ffffff00;
+   top:1210px;
 }
 .bookdiv
 {

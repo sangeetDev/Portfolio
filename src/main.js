@@ -1228,22 +1228,27 @@ function checkMouseClick(event)
 
     if(intersects.length>0)
     {
-        if (intersects[0].object.name=='Laptop'||intersects[0].object.parent.name=='sketchBook'||intersects[0].object.name=='RubixCube_RubixCube_0') 
+        //if (intersects[0].object.name=='Laptop'||intersects[0].object.parent.name=='sketchBook'||intersects[0].object.name=='RubixCube_RubixCube_0') 
         {
-            if(intersects[0].object.name=='RubixCube_RubixCube_0')
+            if(intersects[0].object.name=='RubixCube_RubixCube_0'||intersects[0].object==marker1)
             {
                 option=1;
                 activecamera.userData.animateFlag=true;
-                console.log(intersects[0].object.name)
-                animateForCube(intersects[0].object);
+                console.log(intersects[0].object.name);
+                let cube;
+                scene.traverse(m=>{
+                    if(m.name=='RubixCube_RubixCube_0')
+                        cube=m;
+                })
+                animateForCube(cube);
             }
-            else if(intersects[0].object.name=='Laptop')
+            else if(intersects[0].object.name=='Laptop'||intersects[0].object==marker2)
             {
                 option=2;
                 activecamera.userData.animateFlag=true;
-                animateForLaptop(intersects[0].object);
+                animateForLaptop();
             }
-            else if(intersects[0].object.parent.name=='sketchBook')
+            else if(intersects[0].object.parent.name=='sketchBook'||intersects[0].object==marker3)
             {
                 option=3;
                 animateforSketchbook();
@@ -1330,6 +1335,9 @@ function animateForCube(obj)
     
     const back=document.getElementById('back');
     back.addEventListener('click',function(){
+        models[0].position.x+=0.2;
+        models[0].position.z+=0.2;
+        models[1].position.copy(models[0].position); 
         activecamera=Pcamera;
         scene.environmentIntensity=0;
         scene.background=texture;
@@ -1375,11 +1383,14 @@ function animateForCube(obj)
         console.log(currentIndex);
         scene.remove(Cube);
         obj.material.opacity=1;
+        const canvas = renderer.domElement;
+        if(activecamera==Pcamera)
+        canvas.requestPointerLock();
     })
    
 }
 
-function animateForLaptop(obj)
+function animateForLaptop()
 {
     document.querySelectorAll('.ProfilePic').forEach(btn => {
         btn.style.display = "flex";  // Ensure it's visible
@@ -1400,7 +1411,10 @@ function animateForLaptop(obj)
         option=0;
         activecamera=Pcamera;
         document.querySelectorAll('.ExpContainer').forEach(btn => {
-            btn.style.display = "flex";  // Ensure it's visible
+            btn.style.display = "flex";
+            models[0].position.x+=0.2;
+            models[0].position.z+=0.2;
+            models[1].position.copy(models[0].position);  // Ensure it's visible
             setTimeout(() => { 
                 btn.style.opacity = "0";
                 // Smoothly fade in
@@ -1935,38 +1949,6 @@ wireframe.addEventListener('click',function()
     nowShowing.traverse(m=>{
         if(m.isMesh && m.material.isMeshStandardMaterial)
         {
-            /*    vertexShader: `
-                    attribute vec3 barycentric;
-                    varying vec3 vBarycentric;
-                    void main() {
-                        vBarycentric = barycentric;
-                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                    }
-                `,
-                fragmentShader: `
-                    varying vec3 vBarycentric;
-                    
-                    float edgeFactor(vec3 bary) {
-                        vec3 d = fwidth(bary);
-                        vec3 a3 = smoothstep(vec3(0.0), d * 1.5, bary);
-                        return min(min(a3.x, a3.y), a3.z);
-                    }
-                    
-                    void main() {
-                        float edge = edgeFactor(vBarycentric);
-                        vec3 color = mix(vec3(1.0), vec3(0.0), edge); // White lines, black fill
-                        gl_FragColor = vec4(color, 1.0);
-                    }
-                `,
-                uniforms: {},
-                transparent: true
-            });
-            
-            m.userData.clone=m.clone();
-            m.visible=false;
-            m.userData.clone.geometry=addBarycentricCoordinates(m.userData.clone.geometry);
-            m.userData.clone.material=material;
-            m.parent.add(m.userData.clone);*/
             m.visible=false;
             if(m.userData.clone!=null)
             {
@@ -1996,6 +1978,9 @@ closebtn.addEventListener('click',function(){
     });
     option=0;
     activecamera=Pcamera;
+    const canvas = renderer.domElement;
+    if(activecamera==Pcamera)
+    canvas.requestPointerLock();
 })
 
 prevBtn.addEventListener("click", goPrevPage);
