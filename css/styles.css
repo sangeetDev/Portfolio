@@ -21,6 +21,21 @@ body {
     pointer-events: none; /* Ensures it doesn't interfere with user interactions */
     transition: opacity 1s ease-in-out;
 }
+#nav
+{
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    width:100px;
+    height:100px;
+    background-color: #ffffff00;
+    align-items: center;
+}
+#navig
+{
+    width:100%;
+    height:auto;
+}
 .arrow {
     
     width: 50px;

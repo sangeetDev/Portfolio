@@ -16,6 +16,16 @@ let activecamera;
 let currentCamera;
 let selectedObject;
 let listIndex=-1;
+
+const loadingManager = new THREE.LoadingManager();
+const gltfLoader=new GLTFLoader(loadingManager);
+const manualSteps = 8;
+const expectedAssets = 19;
+const totalItems = manualSteps + expectedAssets;
+let manualProgress = 0;
+let assetProgress = 0;
+
+
 let models=[];
 let HDRI;
 let Mixer=[];
@@ -153,13 +163,10 @@ const paper3 = document.querySelector("#p3");
 const paper4 = document.querySelector("#p4");
 const paper5 = document.querySelector("#p5");
 
-// Event Listener
-
-
-// Business Logic
 let currentLocation = 1;
 let numOfPapers = 5;
 let maxLocation = numOfPapers + 1;
+
 function openBook() {
     book.style.transform = "translateX(50%)";
    // prevBtn.style.transform = "translateX(-180px)";
@@ -245,7 +252,74 @@ function goPrevPage() {
 
         currentLocation--;
     }
+}
+function isSoftwareRenderer() {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return true; // No WebGL at all
+
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = debugInfo 
+        ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        : gl.getParameter(gl.RENDERER);
+
+    console.log("WebGL Renderer:", renderer);
+
+    // Check for known software renderers
+    return (
+        renderer.toLowerCase().includes('swiftshader') ||
+        renderer.toLowerCase().includes('software') ||
+        renderer.toLowerCase().includes('angle (software adapter)')
+    );
 }   
+function detectBrowser() {
+    const ua = navigator.userAgent;
+
+    if (ua.includes("Chrome") && !ua.includes("Edg") && !ua.includes("OPR")) {
+        return "Chrome";
+    } else if (ua.includes("Firefox")) {
+        return "Firefox";
+    } else if (ua.includes("Safari") && !ua.includes("Chrome")) {
+        return "Safari";
+    } else if (ua.includes("Edg")) {
+        return "Edge";
+    } else if (ua.includes("OPR") || ua.includes("Opera")) {
+        return "Opera";
+    } else {
+        return "Unknown";
+    }
+}
+function createFace(color, transform, direction) {
+    const face = document.createElement('div');
+    face.textContent = '3D-viewer';
+    face.style.fontSize = '15px';
+    face.style.fontWeight = 'bold';
+    face.style.display = 'flex';                      // ✅ Use flex to center content
+    face.style.alignItems = 'center';                 // ✅ Center vertically
+    face.style.justifyContent = 'center'; 
+    face.style.fontFamily = 'sans-serif';
+    face.style.color = 'linear-gradient(145deg, #2196f3, #1976d2)';
+    face.style.position = 'absolute';
+    face.style.width = '100px';
+    face.style.height = '100px';
+    face.style.borderRadius = '20px';
+    face.style.transform = transform;
+    face.style.background = `linear-gradient(${direction}, ${color}, ${shadeColor(color, -50)})`;
+    return face;
+  }
+  function shadeColor(color, percent) {
+    let num = parseInt(color.slice(1), 16),
+        amt = Math.round(2.55 * percent),
+        R = (num >> 16) + amt,
+        G = (num >> 8 & 0x00FF) + amt,
+        B = (num & 0x0000FF) + amt;
+    return "#" + (
+      0x1000000 +
+      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+      (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+      (B < 255 ? (B < 1 ? 0 : B) : 255)
+    ).toString(16).slice(1);
+  }
 async function showLoadingScreen() {
     // Create the loading screen container
     const loadingScreen = document.createElement("div");
@@ -254,7 +328,7 @@ async function showLoadingScreen() {
     loadingScreen.style.left = "0";
     loadingScreen.style.width = "100%";
     loadingScreen.style.height = "100%";
-    loadingScreen.style.background = "radial-gradient(circle, rgba(20,20,20,1) 20%, black 100%)";
+    loadingScreen.style.background = 'linear-gradient(145deg,rgb(247, 2, 255),rgb(0, 98, 255))';
     loadingScreen.style.color = "white";
     loadingScreen.style.display = "flex";
     loadingScreen.style.alignItems = "center";
@@ -263,8 +337,9 @@ async function showLoadingScreen() {
     loadingScreen.style.zIndex = "9999";
     loadingScreen.style.fontFamily = "Arial, sans-serif";
     loadingScreen.style.transition = "opacity 1s ease-in-out";
+    loadingScreen.style.perspective= '1000px';
     document.body.appendChild(loadingScreen);
-
+    
     // Create the loading text
     const loadingText = document.createElement("div");
     loadingText.innerText = "Loading...";
@@ -274,9 +349,100 @@ async function showLoadingScreen() {
     loadingText.style.animation = "blink 1s infinite alternate";
     loadingScreen.appendChild(loadingText);
 
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'absolute';
+    wrapper.style.bottom = '100px';
+    wrapper.style.left = '40%';
+    wrapper.style.width = '100px';
+    wrapper.style.height = '100px';
+    wrapper.style.transformStyle = 'preserve-3d';
+    wrapper.style.transition = 'transform 1s ease';
+    wrapper.style.cursor = 'pointer';
+  
+    // === Use only two rotations to make it stand on vertex ===
+    const baseRotation = 'rotateZ(45deg) rotateX(45deg)';
+    wrapper.style.transform = baseRotation;
+  
+    // === Hover: rotate around the vertex-to-vertex axis (1,1,1) ===
+    let rotated = false;
+    wrapper.addEventListener('mouseenter', () => {
+      if (!rotated) {
+        wrapper.style.transform += ' rotate3d(1, 1, 1, 360deg)';
+        rotated = true;
+      }
+    });
+  
+    wrapper.addEventListener('mouseleave', () => {
+      wrapper.style.transform = baseRotation;
+      rotated = false;
+    });
+  
+    wrapper.addEventListener('click', () => {
+      window.open('./alt.html', '_blank');
+    });
+    // === Create Cube Container ===
+    const cube = document.createElement('div');
+    cube.style.width = '100px';
+    cube.style.height = '100px';
+    cube.style.position = 'relative';
+    cube.style.transformStyle = 'preserve-3d';
+    cube.style.borderRadius = '12px';
+    wrapper.appendChild(cube);
+    const baseColor = '#80ed99';
+
+    cube.appendChild(createFace(baseColor, 'translateZ(50px)', 'to top left'));          // front
+    cube.appendChild(createFace(baseColor, 'rotateY(180deg) translateZ(50px)', 'to bottom right')); // back
+    cube.appendChild(createFace(baseColor, 'rotateY(90deg) translateZ(50px)', 'to top right'));     // right
+    cube.appendChild(createFace(baseColor, 'rotateY(-90deg) translateZ(50px)', 'to bottom left'));  // left
+    cube.appendChild(createFace(baseColor, 'rotateX(90deg) translateZ(50px)', 'to top'));           // top
+    cube.appendChild(createFace(baseColor, 'rotateX(-90deg) translateZ(50px)', 'to bottom'));  
+    loadingScreen.appendChild(wrapper);
+
+
+    const cvText = document.createElement('div');
+  cvText.textContent = 'cv';
+  cvText.style.fontSize = '50px';
+  cvText.style.fontWeight = 'bold';
+  cvText.style.fontFamily = 'sans-serif';
+  cvText.style.color = 'linear-gradient(145deg, #2196f3, #1976d2)';
+  cvText.style.background = 'rgba(33, 149, 243, 0)';
+  cvText.style.padding = '20px 40px';
+  cvText.style.borderRadius = '12px';
+  cvText.style.transformStyle = 'preserve-3d';
+  cvText.style.cursor = 'pointer';
+  cvText.style.textShadow = `
+    1px 1px 0 #00000022,
+    2px 2px 4px rgba(0,0,0,0.3)
+  `;
+  cvText.style.transition = 'transform 1s ease-in-out';
+  cvText.style.position = 'absolute';
+  cvText.style.bottom = '100px';
+  cvText.style.left = '50%';
+
+  // Hover rotation effect
+  cvText.addEventListener('mouseenter', () => {
+    cvText.style.transform = 'rotateY(360deg)';
+  });
+
+  cvText.addEventListener('mouseleave', () => {
+    cvText.style.transform = 'rotateY(0deg)';
+  });
+
+  // Open PDF on click
+  cvText.onclick = () => {
+    window.open('./cv/Sangeet Dey.pdf', '_blank'); // Replace with your actual PDF path
+  };
+
+  loadingScreen.appendChild(cvText);
+
+  const QuickLinks = document.createElement("div");
+  QuickLinks.innerText = "Quick Links";
+  QuickLinks.id="quick-Links";
+    loadingScreen.appendChild(QuickLinks);
     // Blinking animation
     const style = document.createElement("style");
     style.innerHTML = `
+
         @keyframes blink {
             0% { opacity: 1; }
             100% { opacity: 0.5; }
@@ -317,10 +483,91 @@ async function showLoadingScreen() {
             margin-top: 5px;
             opacity: 0.8;
         }
+        #quick-Links {
+            font-size: 16px;
+            margin-top: 5px;
+            opacity: 0.8;
+            position:absolute;
+            bottom:270px;
+        }
+         #loading-bar-container {
+            width: 60%;
+            height: 20px;
+            background: #333;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #loading-bar {
+            height: 100%;
+            width: 0%;
+            background: #4caf50;
+            transition: width 0.2s ease;
+        }
     `;
     document.head.appendChild(style);
 
-    // Call init() and wait for it to finish
+    const barContainer = document.createElement('div');
+    barContainer.id = 'loading-bar-container';
+  
+    const bar = document.createElement('div');
+    bar.id = 'loading-bar';
+
+    barContainer.appendChild(bar);
+    loadingScreen.appendChild(barContainer);
+    
+    
+   
+    
+    if (isSoftwareRenderer()) {
+        const warning = document.createElement("div");
+        warning.innerText = "⚠️ Your system is using software rendering.\n\nFor an optimal experience, please enable graphics acceleration in browser settings.";
+        warning.style.background = "#eae2b7";
+        warning.style.color = "#000";
+        warning.style.padding = "20px";
+        warning.style.borderRadius = "10px";
+        warning.style.marginTop = "30px";
+        warning.style.maxWidth = "400px";
+        warning.style.textAlign = "center";
+        loadingScreen.appendChild(warning);
+        
+        // Optional: Add a link to Chrome settings
+        const browserLink = document.createElement("a");
+        const browser = detectBrowser();
+        switch (browser) {
+            case "Chrome":
+                browserLink.href = "chrome://settings/system";
+                //browserLink.innerText = "Open Chrome Settings";
+                break;
+            case "Edge":
+                browserLink.href = "edge://settings/system";
+                //browserLink.innerText = "Open Edge Settings";
+                break;
+            case "Firefox":
+                browserLink.href = "about:preferences";
+                //browserLink.innerText = "Open Firefox Settings";
+                break;
+            case "Safari":
+                browserLink.href = "#";
+                //browserLink.innerText = "Change preferences";
+                browserLink.style.pointerEvents = "none";
+                break;
+            default:
+                browserLink.href = "#";
+                browserLink.innerText = "Unsupported browser";
+                browserLink.style.pointerEvents = "none";
+        }
+        browserLink.innerText = "Enable graphics acceleration";
+        browserLink.style.color = "#00f";
+        browserLink.style.marginTop = "10px";
+        browserLink.style.display = "block";
+        loadingScreen.appendChild(browserLink);
+
+        // Optional: Delay init() or load a lighter fallback scene
+        // return; // Uncomment this if you want to skip loading the full scene
+    }
+    
     await init();
 
     // Remove loading text
@@ -394,9 +641,23 @@ async function showLoadingScreen() {
         }, 1000);
     });
 }
+function updateLoadingBar() {
+    if (totalItems > 0) {
+        const percent = ((assetProgress + manualProgress) / totalItems) * 100;
+        document.getElementById('loading-bar').style.width = `${percent}%`;
+      }
+  }
 async function init()
 {
-    
+    loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
+        //totalItems = itemsTotal + manualSteps;
+      };
+      
+      loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+        assetProgress = itemsLoaded;
+        updateLoadingBar();
+      };
+      
     const container = document.createElement( 'div' );
     document.body.appendChild( container );
     scene = new THREE.Scene();
@@ -427,7 +688,9 @@ async function init()
         if(activecamera==Pcamera)
             renderer.domElement.requestPointerLock(); // Lock cursor on click
     });
-    const hdriTextureLoader = new RGBELoader().load('./Hdri/small_empty_room_3_4k.hdr', texture => 
+    manualProgress++;
+    updateLoadingBar();
+    const hdriTextureLoader = new RGBELoader(loadingManager).load('./Hdri/small_empty_room_3_4k.hdr', texture => 
     {    
         const gen = new THREE.PMREMGenerator(renderer);
         HDRI= gen.fromEquirectangular(texture).texture;
@@ -437,13 +700,15 @@ async function init()
         gen.dispose();
         
     }); 
-    const loader=new GLTFLoader();
+    const textureLoader=new THREE.TextureLoader(loadingManager);
+    
+     
     try 
     {
-        const map1=new THREE.TextureLoader().load("../icons/3D_models.png");
-        const map2=new THREE.TextureLoader().load("../icons/Work-Exp.png");
-        const map3=new THREE.TextureLoader().load("../icons/Sketches.png");
-        const map4=new THREE.TextureLoader().load("../icons/ContactMe.png");
+        const map1=textureLoader.load("../icons/3D_models.png");
+        const map2=textureLoader.load("../icons/Work-Exp.png");
+        const map3=textureLoader.load("../icons/Sketches.png");
+        const map4=textureLoader.load("../icons/ContactMe.png");
         const spmat1=new THREE.SpriteMaterial({map:map1,color:0xffffff,transparent:true});
         const spmat2=new THREE.SpriteMaterial({map:map2,color:0xffffff,transparent:true,depthTest:false,depthWrite:false});
         const spmat3=new THREE.SpriteMaterial({map:map3,color:0xffffff,transparent:true,depthTest:false,depthWrite:false});
@@ -568,7 +833,7 @@ async function init()
             uniforms: {},
             transparent: true
         });
-
+           
         let show1=await loadGLB('../glb/1000128101.glb');
         showModels.push(show1.scene);
         showModels[0].scale.set(0.1,0.1,0.1);
@@ -725,7 +990,7 @@ async function init()
         const listener = new THREE.AudioListener();
         models[1].add( listener );
         sound = new THREE.PositionalAudio( listener );
-        const audioLoader = new THREE.AudioLoader();
+        const audioLoader = new THREE.AudioLoader(loadingManager);
         audioLoader.load( '../sounds/bgm.mp3', function( buffer ) {
         sound.setBuffer( buffer );
         sound.setLoop(true);
@@ -768,7 +1033,8 @@ async function init()
                 marker4.position.y=1.6;
             }
         });
-
+        manualProgress++;
+  updateLoadingBar();
 
 
     } catch (error) {
@@ -792,6 +1058,8 @@ async function init()
     waterplane.castShadow=true;
     waterplane.receiveShadow=true;
     scene.add(waterplane);
+    manualProgress++;
+  updateLoadingBar();
 
     const sunlight=new THREE.DirectionalLight({color:0xffffff,intensity:10});
     scene.add(sunlight);
@@ -804,7 +1072,9 @@ async function init()
     sunlight.shadow.bias=-0.0005;
     sunlight.shadow.blurSamples=10; // default
     sceneLights.push(sunlight);
-    
+    manualProgress++;
+  updateLoadingBar();
+
     const width = 2;
     const height = 2;
     const rectLight = new THREE.RectAreaLight( 0xffffff, 1,  width, height );
@@ -824,19 +1094,25 @@ async function init()
     Light2.shadow.camera.far = 1;
     Light2.shadow.bias=-0.01;
     Light2.shadow.blurSamples=10; // default
+    manualProgress++;
+  updateLoadingBar();
 
     const rectLight3 = new THREE.RectAreaLight( 0xffffff, 1,  10, 10);
     rectLight3.position.set( 0,6,0);
     rectLight3.rotation.x=-Math.PI/2;
     scene.add( rectLight3 );
     sceneLights.push(rectLight3);
+    manualProgress++;
+  updateLoadingBar();
 
     const rectLight4= new THREE.RectAreaLight( 0xffffff, 1,  10, 10 );
     rectLight4.position.set( 0,5.5,0 );
     rectLight4.rotation.x=Math.PI/2;
     scene.add( rectLight4 );
     sceneLights.push(rectLight4);
-   
+   manualProgress++;
+  updateLoadingBar();
+
     Pcamera.position.set(0,1.5,3);
     Pcamera.lookAt(0,1.5,0);
     currentCamera=Pcamera;
@@ -871,10 +1147,11 @@ async function init()
         depthWrite: false,
         side: THREE.DoubleSide
     });
-    
+    manualProgress++;
+  updateLoadingBar();
 
 
-
+  document.getElementById('loading-bar-container').style.display = 'none';
 }
 
 function updateSize(obj) {
@@ -882,27 +1159,10 @@ function updateSize(obj) {
     const scaleFactor = distance * 0.3; // Adjust this factor as needed
     obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
   }
-function animateWaves() 
-{
-    const time = performance.now() * 0.001;
-    const position = waterplane.geometry.attributes.position;
-    for (let i = 0; i < position.count; i++) {
-        let x = position.getX(i);
-        let y = position.getY(i);
-    
-        // Modify wave function to create a left-to-right movement
-        let waveHeight = Math.sin(x * 3 - time * 2) * 0.1 + Math.cos(y * 3 - time) * 0.1;
-        
-        position.setZ(i, waveHeight);
-    }
-  
-    position.needsUpdate = true;
-    waterplane.geometry.attributes.position=position;
-}
 function loadGLB(url) {
     return new Promise((resolve, reject) => {
-        const loader = new GLTFLoader();
-        loader.load(url, 
+        
+        gltfLoader.load(url, 
                 (gltf) => {
                     gltf.scene.traverse((child) => {
                         if (child.isMesh) {

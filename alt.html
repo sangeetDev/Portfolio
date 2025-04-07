@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/styles_viewer.css">
+  <script type="importmap">
+    {
+        "imports":  {
+                        "three": "./libs/mrdoob-three.js-a4dc70d/build/three.module.js",
+                        "three/addons/": "./libs/mrdoob-three.js-a4dc70d/examples/jsm/",
+                        "three/src/": "./libs/mrdoob-three.js-a4dc70d/src/",
+                        "three/utils/":"./libs/mrdoob-three.js-a4dc70d/examples/jsm/utils/",
+                        "d3": "https://cdn.skypack.dev/d3@7"
+                    }
+    }
+  </script>
+</head>
+<body>
+    <script type="module" src="viewer_src/main.js"></script>
+    <div id="timeline-editor">
+      <h3>Timeline Editor</h3>
+      <div id="toolbar">
+        <label >FPS</label>
+        <select id="fps">
+          <option value="60">60</option>
+          <option value="30">30</option>
+          <option value="24">24</option>
+      </select>
+  
+      <label >Total frames</label>
+      <input type="number" min="1"  max="10000" id="total-frames" value="200">
+      <label >Current Frame</label>
+      <input type="number" min="1"  max="10000" id="current-Frame" value="0" >
+      <button id="play-button" >Play</button>
+      <button id="pause-button" >Pause</button>
+      <button id="stop-button" >Stop</button>
+      
+      </div>
+      <div id="container-A">
+        <div id="Object-keyframe">
+          <h4>Outliner</h4>
+          <ul id="scene-tree-Outliner">
+            <!-- Tree items will be dynamically added here -->
+        </ul>
+        </div>
+        <div id ="timeline-container">
+        <div class="frames-number"id="frames-number"></div>
+        <div class="timeline" id="timeline">
+          
+        </div>
+        <div class="cursor" id="cursor"></div>
+      </div>
+      </div>
+    </div>
+    <div id="panel">
+      <div id="inner-container">
+      <div id="outliner-panel">
+        <h3 class="header">Scene</h3>
+        <div id="outline-container">
+        <ul id="scene-tree">
+            <!-- Tree items will be dynamically added here -->
+        </ul>
+        </div>
+      </div>
+      <div id="Lights-Panel">
+        <h3 class="header">Lights</h3>
+        <div id="Lights-Container"></div>
+      </div>
+      <div id="Particles-Panel">
+        <h3 class="header">Particle Systems</h3>
+        <div id="Particles-Container"></div>
+      </div>
+      <div id="Cameras-Panel">
+        <h3 class="header">Cameras</h3>
+        <div id="Cameras-Container"></div>
+      </div>
+      <div id="Curves-Panel">
+        <h3 class="header">Paths</h3>
+        <div id="Curves-Container"></div>
+      </div>
+      <div id="Hotspots-Panel">
+        <h3 class="header">Hotspots</h3>
+        <div id="Hotspots-Container"></div>
+      </div>
+      <hr id="divider" style="width:100%">
+      
+      </div> 
+      <div id="attribute-editor">
+        <h3>Attribute editor</h3>
+        <div id="container"></div>
+      </div>
+      </div>
+     <!-- <div id="attribute-editor">
+      <h3>Attribute editor</h3> -->
+    </div> 
+    <div id="d3-container" style="display:none"></div>
+    <div id="dialogBox" class="dialog-box" style="display:none;">
+      <div class="dialog-content">
+          <span class="close-btn" id="closeDialog">&times;</span>
+          <h3>Enter New Group Name</h3>
+          <input type="text" id="userInput" placeholder="Name">
+          <button id="submitBtn">Submit</button>
+      </div>
+  </div>  
+  <div id="customAlert" style="display: none;">
+    <div class="alert-content">
+      <p>Source, target or both objects might have animation keyframes, which may not work as expected if grouped. Are you sure you want to proceed?</p>
+      <button id="yesButton">Yes</button>
+      <button id="noButton">No</button>
+      <button id="closeButton">&times;</button>
+    </div>
+  </div>
+  <input type="file" id="textureUpload" accept="image/*" style="display:none;">
+  <div id="texture-panel" style="display:none;">
+    <button id="back-button">Back</button>
+    <div id="grid-container"></div>
+      
+  </div>
+  <div id="Shot-Sequencer" style="display:none">
+    <h3 style="text-align: left">Shot Sequencer</h3>
+    <button id="close-button-sequencer">X</button>
+    <div id="Camera-List"></div>
+    <div id="Shot-Blocks"></div>
+  </div>
+  <input type="file" id="hdrInput" accept=".hdr" style="display: none;" />
+</body>
+</html>

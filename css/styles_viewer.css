@@ -1,0 +1,499 @@
+#timeline-editor
+{
+    position:fixed;
+    bottom: 0px;
+    left:0px;
+    width: 100%;
+    height: 120px;
+    background-color: rgb(170, 171, 171);
+    align-items:center;
+    padding:2px;
+    border:2px solid orange;
+}
+#timeline-editor h3 
+{
+    margin: 0; /* Remove default margin */
+    padding: 3px 0; /* Add padding for spacing */
+    text-align: left; /* Center the text horizontally */
+}
+#toolbar
+{
+    background-color: whitesmoke;
+    position: fixed;
+    width:100%;
+    height:30px;
+    border: 2px solid black;
+    align-items:center;
+    display: flex;
+}
+#container-A
+{
+    background-color: whitesmoke;
+    width:100%;
+    height: 65%;
+    padding: 31px 0px 0px 0px;
+    align-items:center;
+    overflow-y: scroll;
+    display:flex;
+}
+#Object-keyframe
+{
+    background-color: whitesmoke;
+    width:20%;
+    height: 100%;
+    align-items:center;
+    border: 2px solid black;
+}
+#Object-keyframe 
+{
+    height: 100%;
+    background-color: whitesmoke;
+    width:20%;
+    overflow-y: auto;
+    overflow-x:auto;
+    border: 2px solid black;
+    padding: 10px;
+}
+.tree-button 
+{
+    margin-left: 5px;
+    cursor: pointer;
+}
+.tree-button:hover 
+{
+    background-color: #f0f0f0;
+}
+.hidden 
+{
+    display: none;
+} 
+#Object-keyframe h4
+{
+    margin: 0; 
+    padding: 3px ; 
+    text-align: left;
+}
+#timeline-container
+{
+    width:80%;
+    height:100%;
+    align-items:stretch;
+    border: 2px solid black; 
+    
+    
+}
+.frames-number
+{
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+  width:100%;
+  height:30%;
+  background-color: bisque;
+  
+  
+}
+.number
+{
+    width:5px;
+    height:5px;
+    
+}
+.timeline 
+{
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  width:100%;
+  height:80%;
+   
+}
+
+.line 
+{
+  width: 1px;
+  background-color: lightgrey;
+}
+.keyframe-marker 
+{
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: blue;
+    transform: rotate(45deg); 
+    top: 0;
+    margin-top: -4px; 
+    pointer-events: none; 
+}
+#cursor 
+{ 
+  position:absolute;
+  width: 5px;
+  height: 100%;
+  background-color: red;
+  cursor: pointer;
+}
+.lil-gui  
+{
+    overflow-y: auto; 
+}
+.lil-gui .controller 
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.lil-gui input,
+.lil-gui select,
+.lil-gui textarea 
+{
+    position:absolute;
+    width: 150px;
+    height:20px; 
+    margin: 20px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px; 
+    padding: 20px 20px; 
+}
+.lil-gui .lil-gui__row 
+{
+    margin-bottom: 10px; 
+}
+#panel
+{
+    position: fixed;
+    left: 5px;
+    top: 5px;
+    width: 200px;
+    height: 82%;
+    background-color: #cacacb;
+    overflow-y: auto;
+    overflow-x:auto;
+    resize: horizontal;
+    padding: 10px;      
+}
+#inner-container 
+{
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+#outliner-panel, #attribute-editor 
+{
+    flex: 1;
+    padding: 5px;
+    
+}
+#outliner-panel 
+{
+    height:20%;
+    /*background-color: #f0f0f0;*/
+    
+    padding: 10px;
+}
+.header
+{
+    margin: 0; /* Remove default margin */
+    padding: 3px 0; /* Add padding for spacing */
+    text-align: left;
+    font-size: 15px /* Center the text horizontally */
+}
+
+#Lights-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+#Particles-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+#Cameras-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+#Paths-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+#Hotspots-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+#Paths-Container
+{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+    padding: 5px;
+}
+.tree-button 
+{
+    margin-left: 5px;
+    cursor: pointer;
+}
+.tree-button.dragging 
+{
+    opacity: 0.5;
+}
+.tree-button.hovered 
+{
+    background-color: #f0f0f0;
+}
+.tree-button:hover 
+{
+    background-color: #f0f0f0;
+}  
+#container
+{
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+#outline-container
+{
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x:auto;
+}
+#curve-editor
+{
+    position: absolute;
+    top:800px;
+    right:10px;
+    background-color: #f0f0f0;
+    overflow-x: scroll;
+}
+#d3-container 
+{
+    position: absolute;
+    bottom: 160px;
+    right: 5px;
+    width: 640px;
+    height: 400px;
+    background-color: rgba(255, 255, 255);
+    border: 2px solid rgb(200, 200, 200);
+}
+.axis path,
+.axis line 
+{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+.dialog-box 
+{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dialog-content 
+{
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.close-btn 
+{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+#customAlert 
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.alert-content 
+{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+.alert-content button 
+{
+    margin: 10px;
+    padding: 8px 12px;
+    font-size: 16px;
+}
+#closeButton 
+{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+#texture-panel
+{
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  width:20%;
+  height:20%;
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column; /* Arrange content in a column layout */
+    gap: 10px; /* Space between the back button and the grid */
+    padding: 20px; /* Space around the panel */
+    background-color: #f9f9f9; /* Light background */
+    border: 1px solid #ddd; /* Optional border */
+    border-radius: 10px; /* Optional rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    overflow-y: auto; /* Add scrolling for overflowing content */
+    max-height: 500px; /* Adjust as needed for the container */
+  
+}
+#back-button {
+    align-self: flex-start; /* Align the back button to the left */
+    margin-bottom: 10px; /* Space below the back button */
+    padding: 8px 12px;
+    background-color: #007BFF; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#back-button:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+}
+
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns per row */
+    gap: 20px; /* Space between items */
+    padding-top: 10px; /* Space above the grid */
+}
+
+#grid-container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    background-color: #ffffff; /* White background for items */
+    border: 1px solid #ccc; /* Border for items */
+    border-radius: 8px; /* Rounded corners for items */
+    padding: 10px; /* Padding inside each item */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+#grid-container div:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+#grid-container img {
+    width: 80px; /* Adjust thumbnail size */
+    height: 80px;
+    object-fit: contain; /* Ensure images are not cropped */
+    margin-bottom: 10px; /* Space below the image */
+}
+#Shot-Sequencer
+  {
+  position: absolute;
+  top:25%;
+  left:15%;
+  width:80%;
+  height:50%;
+  background-color: #f0f0f0;
+  border:2px solid black;
+  display:flex;
+ }
+ #Shot-Sequencer h3
+ {
+  margin: 0; /* Remove default margin */
+  padding: 3px 0; /* Add padding for spacing */
+  text-align: left;
+  font-size: 20px;
+ }
+ #close-button-sequencer {
+    position:absolute;
+    top:5px;
+    right:5px; /* Align the back button to the left */
+    margin-bottom: 5px; /* Space below the back button */
+    padding: 8px 12px;
+    background-color: #007BFF; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+}
+#close-button-sequencer:hover {
+    background-color: #0056b3; /* Darker button color on hover */
+}
+#Camera-List
+{
+  position:absolute;
+    top:35px;
+    left:2px; 
+    width:20%;
+    height:91.5%;
+    background-color: #cdcecf; /* Button color */
+    color: #fff;
+    border: none;
+    /*cursor: pointer;*/
+    font-size: 10px;
+}
+#Shot-Blocks
+{
+  position:absolute;
+    top:35px;
+    left:21%; 
+    width:78.8%;
+    height:91.5%;
+    background-color: #cdcecf; /* Button color */
+    color: #fff;
+    border: none;
+    /*cursor: pointer;*/
+    font-size: 10px;
+}
+
