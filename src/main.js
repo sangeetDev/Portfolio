@@ -281,7 +281,7 @@ function detectBrowser() {
         return "Firefox";
     } else if (ua.includes("Safari") && !ua.includes("Chrome")) {
         return "Safari";
-    } else if (ua.includes("Edg")) {
+    } else if (ua.includes("Edge")) {
         return "Edge";
     } else if (ua.includes("OPR") || ua.includes("Opera")) {
         return "Opera";
@@ -340,6 +340,53 @@ async function showLoadingScreen() {
     loadingScreen.style.perspective= '1000px';
     document.body.appendChild(loadingScreen);
     
+    if (isSoftwareRenderer()) {
+        const warning = document.createElement("div");
+        warning.innerText = "⚠️ Your system is using software rendering.\n\nFor an optimal experience, please enable graphics acceleration in browser settings.";
+        warning.style.background = "#eae2b7";
+        warning.style.color = "#000";
+        warning.style.padding = "20px";
+        warning.style.borderRadius = "10px";
+        warning.style.marginTop = "30px";
+        warning.style.maxWidth = "400px";
+        warning.style.textAlign = "center";
+        loadingScreen.appendChild(warning);
+        
+        // Optional: Add a link to Chrome settings
+        const browserLink = document.createElement("a");
+        const browser = detectBrowser();
+        switch (browser) {
+            case "Chrome":
+                browserLink.href = "chrome://settings/system";
+                //browserLink.innerText = "Open Chrome Settings";
+                break;
+            case "Edge":
+                browserLink.href = "edge://settings/system";
+                //browserLink.innerText = "Open Edge Settings";
+                break;
+            case "Firefox":
+                browserLink.href = "about:preferences";
+                //browserLink.innerText = "Open Firefox Settings";
+                break;
+            case "Safari":
+                browserLink.href = "#";
+                //browserLink.innerText = "Change preferences";
+                browserLink.style.pointerEvents = "none";
+                break;
+            default:
+                browserLink.href = "#";
+                browserLink.innerText = "Unsupported browser";
+                browserLink.style.pointerEvents = "none";
+        }
+        browserLink.innerText = "Enable graphics acceleration";
+        browserLink.style.color = "#00f";
+        browserLink.style.marginTop = "10px";
+        browserLink.style.display = "block";
+        loadingScreen.appendChild(browserLink);
+
+        // Optional: Delay init() or load a lighter fallback scene
+        // return; // Uncomment this if you want to skip loading the full scene
+    }
     // Create the loading text
     const loadingText = document.createElement("div");
     loadingText.innerText = "Loading...";
@@ -520,53 +567,7 @@ async function showLoadingScreen() {
     
    
     
-    if (isSoftwareRenderer()) {
-        const warning = document.createElement("div");
-        warning.innerText = "⚠️ Your system is using software rendering.\n\nFor an optimal experience, please enable graphics acceleration in browser settings.";
-        warning.style.background = "#eae2b7";
-        warning.style.color = "#000";
-        warning.style.padding = "20px";
-        warning.style.borderRadius = "10px";
-        warning.style.marginTop = "30px";
-        warning.style.maxWidth = "400px";
-        warning.style.textAlign = "center";
-        loadingScreen.appendChild(warning);
-        
-        // Optional: Add a link to Chrome settings
-        const browserLink = document.createElement("a");
-        const browser = detectBrowser();
-        switch (browser) {
-            case "Chrome":
-                browserLink.href = "chrome://settings/system";
-                //browserLink.innerText = "Open Chrome Settings";
-                break;
-            case "Edge":
-                browserLink.href = "edge://settings/system";
-                //browserLink.innerText = "Open Edge Settings";
-                break;
-            case "Firefox":
-                browserLink.href = "about:preferences";
-                //browserLink.innerText = "Open Firefox Settings";
-                break;
-            case "Safari":
-                browserLink.href = "#";
-                //browserLink.innerText = "Change preferences";
-                browserLink.style.pointerEvents = "none";
-                break;
-            default:
-                browserLink.href = "#";
-                browserLink.innerText = "Unsupported browser";
-                browserLink.style.pointerEvents = "none";
-        }
-        browserLink.innerText = "Enable graphics acceleration";
-        browserLink.style.color = "#00f";
-        browserLink.style.marginTop = "10px";
-        browserLink.style.display = "block";
-        loadingScreen.appendChild(browserLink);
-
-        // Optional: Delay init() or load a lighter fallback scene
-        // return; // Uncomment this if you want to skip loading the full scene
-    }
+    
     
     await init();
 
@@ -1614,7 +1615,7 @@ function animateForCube(obj)
         });
         scene.traverse(m=>
             {
-                if(m.isMesh)
+                if(m.isMesh||m.isSprite)
                 {
                     {
                        m.visible=true;
@@ -1652,34 +1653,30 @@ function animateForCube(obj)
 
 function animateForLaptop()
 {
-    document.querySelectorAll('.ProfilePic').forEach(btn => {
-        btn.style.display = "flex";  // Ensure it's visible
-        setTimeout(() => { 
-            btn.style.opacity = "1"; // Smoothly fade in
-        }, 1000); // Small delay to allow display change before opacity transition
-    });
-    document.querySelectorAll('.ExpContainer').forEach(btn => {
-        btn.style.display = "flex";  // Ensure it's visible
-        setTimeout(() => { 
-            btn.style.opacity = "1"; // Smoothly fade in
-        }, 1000); // Small delay to allow display change before opacity transition
-    });
+    const exp = document.querySelector(".experience-container");
+    exp.style.display="flex";
+    // Timeout gives the browser a moment to register initial opacity
+    setTimeout(() => {
+      exp.style.opacity = "1";
+    }, 1000); // Delay ensures transition kicks in
+  
     const close=document.getElementById('close');
     close.addEventListener('click',function(){
         activecamera.position.set(-2.1,2,-1);
         activecamera.userData.animateFlag=false;
         option=0;
         activecamera=Pcamera;
-        document.querySelectorAll('.ExpContainer').forEach(btn => {
-            btn.style.display = "flex";
-            models[0].position.x+=0.2;
-            models[0].position.z+=0.2;
-            models[1].position.copy(models[0].position);  // Ensure it's visible
-            setTimeout(() => { 
-                btn.style.opacity = "0";
-                // Smoothly fade in
-            }, 1000); // Small delay to allow display change before opacity transition
-        });
+        models[0].position.x+=0.2;
+        models[0].position.z+=0.2;
+        models[1].position.copy(models[0].position);  // Ensure it's visible
+     // Small delay to allow display change before opacity transition
+     
+    // Timeout gives the browser a moment to register initial opacity
+    setTimeout(() => {
+      exp.style.opacity = "1";
+       exp.style.display="none"
+    }, 1000);
+        
 
     })
 }
@@ -1735,58 +1732,7 @@ function addBarycentricCoordinates(geometry) {
     geometry.setAttribute('barycentric', new THREE.BufferAttribute(barycentric, 3));
     return geometry;
 }
-function fadeToBlackAndBack(i) {
-    return new Promise((resolve) => {
-        const overlay = document.getElementById("fadeOverlay");
 
-        // Fade to black
-        overlay.style.opacity = 1;
-
-        setTimeout(() => {
-            // Fade back to normal
-            overlay.style.opacity = 0;
-            const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = 512; 
-        canvas.height = 512;
-
-    // Create a vertical gradient from sky (top) to ground (bottom)
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        if(i==2)
-        {
-            gradient.addColorStop(0.01, "#fefae0");  // Sky blue
-            gradient.addColorStop(1, "#a44a3f");  // Light beige
-
-        }
-        if(i==0)
-        {
-            gradient.addColorStop(0.5, "#000814");
-            gradient.addColorStop(0.9, "#3a0ca3");  // Sky blue
-           
-        }
-        
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Convert to a Three.js texture
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.needsUpdate = true;
-
-        scene.background = texture;
-
-        markers.forEach(function(m){
-            m.visible=false;
-        });
-        for( let i=0; i<models.length;i++)
-        {
-            models[i].visible=false;   
-        }
-
-            // Wait for the fade-out transition to complete before resolving
-            setTimeout(resolve, 1000); // Adjust time based on CSS transition duration
-        }, 1500); // Stay black for 1.5 seconds before fading back
-    });
-}
 function setSelectedObject(obj)
 {
     selectedObject=obj;
@@ -1839,7 +1785,7 @@ function animate()
             activecamera.lookAt(new THREE.Vector3(-0.04,0.51,-1.92));
             scene.traverse(m=>
                 {
-                    if(m.isMesh)
+                    if(m.isMesh||m.isSprite)
                     {
                         if(m.name !== 'RubixCube_RubixCube_0' && !m.name.startsWith("geo")&& m.name!=="Grid")
                         {
@@ -1858,6 +1804,7 @@ function animate()
                         }
                         
                     }
+                    
                     
                 })
                 models[0].visible=false;

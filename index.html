@@ -55,144 +55,184 @@
       <p id="info"></p>
     </div>
 
-    <div class="ExpContainer" id="container1">
-      <div id="menuBar">
-        <button class ="Close" id="close">
-          <img src="./icons/close.png" alt="close">
-        </button>
-      </div>
-      <div id="Profile">
-        <div class="CoverPic" id="CoverPic">
-          <img src="./textures/gradient.jpg" alt="My Photo">
-        </div>
-        <button class="ProfilePic" id="Pic">
-          <img src="./icons/profilePic.png" alt="My Photo">
-        </button>
-        <h1 id="name">Sangeet Dey</h1>
-        <p id="Designation">3D Artist | Developer | Interactive experience creator</p>
-        <img id="locImage" src="./icons/location.png" alt="My Photo">
-        <p id="Location"> Bangaluru,Karnataka,India</p>
-        <p id="section1">Hi,</p>
-        <p id="section2"> I'm a 3D Modeling and Texturing Artist with four years of expertise in crafting immersive digital 
-          environments through WebGL and Three.js. My dual foundation in Computer Engineering and Animation enables me to bridge the technical-creative divide, 
-          delivering interactive experiences that don't just look stunning, but perform seamlessly. I thrive in collaborative environments where precision meets innovation.
-        </p>
-        <p id="section3">My childhood curiosity fuelled by the hours spent sketching my surrounding or taking apart my toys has today
-          evolved into a professional passion. I'm captivated by creating interactive product experiences that transform passive browsing into 
-          active engagement—allowing consumers to visualize, explore, and connect with products before purchase. This intersection of storytelling, technology, 
-          and design drives my work to empower clients and revolutionize their customer relationships. </p>
-      </div>
-      
-      <div id="WorkEx">
-        <h1 id="workex">Work Experiences</h1>
-        <img id="logo1" src="./icons/AVLogo.png" alt="Avataar">
-        <h2 id="Company1">Avataar</h2>
-        <p id="Duration1">October 2021 - Present</p>
-
-        <h2 id="LastDesig">Senior Associate- 3D R&D</h2>
-        <p id="LastDuration">February 2024- Present</p>
-        <ul class="custom-list">
-          <li>Primarily worked on improving
-            and creating new features to be
-            implemented in Avataar’s Creator
-            platform.
-          </li>
-          <li>Built a prototyping environment to
-            create new tools and features from three.js
-          </li>
-          <li>Demo-ed new features to stakeholders in pitch
-            meetings at quaterly intervals
-          </li>
-          <li>Built a GLB optimisation tool for the Clothing and 
-              Apparel to make their outputs suitable for Creator Platform
-          </li>
-          <li> Tested and gave feedback
-            on the implemented features.
-          </li>
-          <li> Did market research on competitor web
-            applications.
-          </li>
-          <li> Reviewed features using Generative AI
-            and documented best prompting
-            practices.
-          </li>
-          <li>Worked along with the Product team and
-            the UX/UI team to figure out user
-            workflows and feature recommendations
-          </li>
-          
-        </ul>
-      
-      <h2 id="MiddleDesig">Senior Associate- 3D CoE</h2>
-      <p id="MiddleDuration">June 2023- February 2024</p>
-        <ul class="custom-middle-list">
-          <li>Primarily worked on creating high-quality 3D assets
-          </li>
-          <li>Managed my team and oversaw daily operations, delegating tasks,
-            maintaining consistent quality output
-          </li>
-          <li>Worked for clients like Amazon, Benchmade, Crate & Barrel
-          </li>
-          <li>Collaborated With the QC team to maitain the quality bar.
-          </li>
-          <li> Evaluated feasibility within client deadlines and established realistic expectations for project scope and limitations.
-          </li>
-        </ul>
-
-      <h2 id="FirstDesig">Associate- Platform Delivery</h2>
-      <p id="FirstDuration">October 2021- June 2023</p>
-        <ul class="custom-first-list">
-          <li>Primarily worked on creating high-quality 3D assets
-          </li>
-          <li>Worked for clients like Lowes, Coupang, Flipkart, Amazon
-          </li>
-          <li>Responsible for each asset through the whole production pipeline--modelling,
-            texturing and corrections/changes
-          </li>
-        </ul>
-
-      <img id="logo2" src="./icons/rrd-logo.png" alt="RRD">
-      <h2 id="Company2">R R Donnelly</h2>
-      <p id="Duration2">August 2020 - September 2021</p>
-
-      <h2 id="Desig">3D Artist</h2>
-      <p id="Duration">August 2020 - September 2021</p>
-      <ul class="custom-list-1st">
-        <li>Primarily worked on creating high-quality 
-          3D assets.
-        </li>
-        <li>Responsible for each asset through the whole production pipeline--modelling,
-          texturing and corrections/changes
-        </li>
-        <li>Worked for the primary client Amazon
-        </li>
-      </ul>
-      </div>
-
-      <div id="Education">
-        <h1 id="education">Education</h1>
-
-        <h2 id="PG">PG Diploma in Animation</h2>
-        <p id="year1">2020</p>
-        <p id="inst1">ICAT Design and Media College, Chennai</p>
-        <img id="emblem1" src="./icons/icat-emblem.png">
-
-        <h2 id="Degree">BE in Computer Science and Engineering</h2>
-        <p id="year2">2018</p>
-        <p id="inst2">Jorhat Engineering College,Jorhat</p>
-        <img id="emblem2" src="./icons/JEC-emblem.png">
-
-        <h2 id="School">Senior Secondary</h2>
-        <p id="year3">2014</p>
-        <p id="inst3">Sanskriti The Gurukul, Gauhati</p>
-        <img id="emblem3" src="./icons/Sanskriti-emblem.png">
-      </div>
-      <div id="Skills">
-        <h1 id="skills">Skills</h1>
-        <img id="softwares" src="./icons/skills_icons.png">
-      </div>
-      <div id="gap"></div>
+     <div class="experience-container">
+    <div class="header">
+      <button class ="close-btn" id="close">
+        <img src="./icons/close.png" alt="close">
+      </button>
     </div>
+    <div class="content">
+      <div class="left-column">
+        <div class="panel" id="Profile">
+          <div class="CoverPic" id="CoverPic">
+            <img src="./textures/gradient.jpg" alt="My Photo">
+          </div>
+          <button class="ProfilePic" id="Pic">
+            <img src="./icons/profilePic.png" alt="My Photo">
+          </button>
+          <h1 id="name">Sangeet Dey</h1>
+          <h3 id="Designation">3D Artist | Developer | Interactive experience creator</h3>
+          <div id="Location">
+            <p id="Location-content"> Bangaluru, Karnataka, India</p>
+          </div>
+          <div id="profile-content">Hi,<br>
+            I'm a 3D Modeling and Texturing Artist with four years of expertise in crafting immersive digital 
+            environments through WebGL and Three.js. My dual foundation in Computer Engineering and Animation enables me to bridge the technical-creative divide, 
+            delivering interactive experiences that don't just look stunning, but perform seamlessly. I thrive in collaborative environments where precision meets innovation.<br>
+            My childhood curiosity fuelled by the hours spent sketching my surrounding or taking apart my toys has today
+            evolved into a professional passion. I'm captivated by creating interactive product experiences that transform passive browsing into 
+            active engagement—allowing consumers to visualize, explore, and connect with products before purchase. This intersection of storytelling, technology, 
+            and design drives my work to empower clients and revolutionize their customer relationships.
+          </div>
+          
+        </div>
+        <div class="panel" id="Education">
+          <h1 id="education" class="heading">Education</h1>
+        <div id="PG" class="education-content">
+          <img class="emblem" id="emblem1" src="./icons/icat-emblem.png">
+          <div id="PG content">
+            <h2 id="Pg" class="degree">PG Diploma in Animation          2020</h2>
+            <p id="inst1" class="inst">ICAT Design and Media College, Chennai</p>
+          </div>
+        </div>
+       
+        <div id="BE" class="education-content">
+          <img class="emblem" id="emblem2" src="./icons/JEC-emblem.png">
+          <div id="BE content">
+            <h2 id="Degree" class="degree">BE in Computer Science and Engineering 2018</h2>
+            <p id="inst2" class="inst">Jorhat Engineering College,Jorhat</p>
+          </div>        
+        </div>
+        
+        <div id="School" class="education-content">
+          <img class="emblem" id="emblem3" src="./icons/Sanskriti-emblem.png">
+          <div id="school content">
+            <h2 id="school" class="degree">Senior Secondary  2018</h2>
+            <p id="inst3" class="inst">Sanskriti The Gurukul, Gauhati</p>
+          </div>        
+        </div>
+
+    </div>
+      </div>
+    <div class="right-column">
+        <div class="panel work-exp">
+          <h1 id="workex" class="heading">Work Experiences</h1>
+
+          <div id="Avataar"class="Company">
+          <div class="company-heading">
+          <img id="logo1" class="emblem" src="./icons/AVLogo.png" alt="Avataar">
+          <div class="name-and-duration">
+            <h2 id="Company1" class="degree">Avataar</h2>
+            <p id="Duration1" class="inst">October 2021 - Present</p>
+          </div>
+          
+          </div>
+          <div class="Designation-Duration">
+            <h3 id="desig1" class="desig">Senior Associate- 3D R&D</h3>
+            <p id="duration1" class="duration">February 2024- Present</p>
+          </div>
+          <ul class="custom-list">
+            <li>Primarily worked on improving
+              and creating new features to be
+              implemented in Avataar’s Creator
+              platform.
+            </li>
+            <li>Built a prototyping environment to
+              create new tools and features from three.js
+            </li>
+            <li>Demo-ed new features to stakeholders in pitch
+              meetings at quaterly intervals
+            </li>
+            <li>Built a GLB optimisation tool for the Clothing and 
+                Apparel to make their outputs suitable for Creator Platform
+            </li>
+            <li> Tested and gave feedback
+              on the implemented features.
+            </li>
+            <li> Did market research on competitor web
+              applications.
+            </li>
+            <li> Reviewed features using Generative AI
+              and documented best prompting
+              practices.
+            </li>
+            <li>Worked along with the Product team and
+              the UX/UI team to figure out user
+              workflows and feature recommendations
+            </li>
+            
+          </ul>
+
+          <div class="Designation-Duration">
+            <h3 id="desig2" class="desig">Senior Associate- 3D CoE</h3>
+            <p id="duration2" class="duration">June 2023- February 2024</p>
+          </div>
+          <ul class="custom-list">
+            <li>Primarily worked on creating high-quality 3D assets
+            </li>
+            <li>Managed my team and oversaw daily operations, delegating tasks,
+              maintaining consistent quality output
+            </li>
+            <li>Worked for clients like Amazon, Benchmade, Crate & Barrel
+            </li>
+            <li>Collaborated With the QC team to maitain the quality bar.
+            </li>
+            <li> Evaluated feasibility within client deadlines and established realistic expectations for project scope and limitations.
+            </li>
+          </ul>
+
+          <div class="Designation-Duration">
+            <h3 id="desig3" class="desig">Associate- Platform Delivery</h3>
+            <p id="duration3" class="duration">October 2021- June 2023</p>
+          </div>
+          <ul class="custom-list">
+            <li>Primarily worked on creating high-quality 3D assets
+            </li>
+            <li>Worked for clients like Lowes, Coupang, Flipkart, Amazon
+            </li>
+            <li>Responsible for each asset through the whole production pipeline--modelling,
+              texturing and corrections/changes
+            </li>
+          </ul>
+
+
+          
+          </div>
+
+          <div id="RRDonelly"class="Company">
+            <div class="company-heading">
+            <img id="logo2" class="emblem" src="./icons/rrd-logo.png" alt="RRD">
+            <div class="name-and-duration">
+              <h2 id="Company2" class="degree">R R Donnelly</h2>
+              <p id="Duration2" class="inst">August 2020 - September 2021</p>
+            </div>
+            
+            </div>
+            <div class="Designation-Duration">
+              <h3 id="desig4" class="desig">3D Artist</h3>
+              <p id="duration4" class="duration">August 2020 - September 2021</p>
+            </div>
+            <ul class="custom-list">
+              <li>Primarily worked on creating high-quality 
+                3D assets.
+              </li>
+              <li>Responsible for each asset through the whole production pipeline--modelling,
+                texturing and corrections/changes
+              </li>
+              <li>Worked for the primary client Amazon
+              </li>
+              
+            </ul>
+            </div>
+
+        </div>
+        <div class="panel skills">
+          <h1 id="skills" class="heading">Skills</h1>
+        <img id="softwares" src="./icons/skills_icons.png">
+        </div>
+    </div>
+    </div>
+</div>
 
    
     <div id="bookdiv" class="bookdiv">
