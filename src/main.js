@@ -321,6 +321,11 @@ function createFace(color, transform, direction) {
     ).toString(16).slice(1);
   }
 async function showLoadingScreen() {
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    let mobileMessage;
+   
+
     // Create the loading screen container
     const loadingScreen = document.createElement("div");
     loadingScreen.style.position = "fixed";
@@ -339,6 +344,32 @@ async function showLoadingScreen() {
     loadingScreen.style.transition = "opacity 1s ease-in-out";
     loadingScreen.style.perspective= '1000px';
     document.body.appendChild(loadingScreen);
+
+    if (isMobile) {
+        mobileMessage = document.createElement("div");
+        mobileMessage.style.position = "fixed";
+        mobileMessage.style.top = "0";
+        mobileMessage.style.left = "0";
+        mobileMessage.style.width = "100%";
+        mobileMessage.style.height = "100%";
+        mobileMessage.style.background = "linear-gradient(145deg, #ff416c, #ff4b2b)";
+        mobileMessage.style.color = "white";
+        mobileMessage.style.display = "flex";
+        mobileMessage.style.alignItems = "center";
+        mobileMessage.style.justifyContent = "center";
+        mobileMessage.style.flexDirection = "column";
+        mobileMessage.style.zIndex = "9999";
+        mobileMessage.style.fontFamily = "Arial, sans-serif";
+        mobileMessage.style.textAlign = "center";
+        mobileMessage.innerHTML = `
+            <div style="font-size: 32px; font-weight: bold; margin-bottom: 10px;">⚠️ Not Supported</div>
+            <div style="font-size: 18px; max-width: 90%; line-height: 1.5;">
+                This website is not optimized for mobile devices. <br>Please visit from a desktop or laptop for the best experience.
+            </div>
+        `;
+        loadingScreen.appendChild(mobileMessage);
+        return;
+    }
     
     if (isSoftwareRenderer()) {
         const warning = document.createElement("div");
@@ -451,8 +482,8 @@ async function showLoadingScreen() {
   cvText.style.fontSize = '50px';
   cvText.style.fontWeight = 'bold';
   cvText.style.fontFamily = 'sans-serif';
-  cvText.style.color = 'linear-gradient(145deg, #2196f3, #1976d2)';
-  cvText.style.background = 'rgba(33, 149, 243, 0)';
+  cvText.style.color="white";
+  cvText.style.background = 'rgba(255, 255, 255, 0)';
   cvText.style.padding = '20px 40px';
   cvText.style.borderRadius = '12px';
   cvText.style.transformStyle = 'preserve-3d';
