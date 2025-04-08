@@ -352,7 +352,7 @@ async function showLoadingScreen() {
         mobileMessage.style.left = "0";
         mobileMessage.style.width = "100%";
         mobileMessage.style.height = "100%";
-        mobileMessage.style.background = "linear-gradient(145deg, #ff416c, #ff4b2b)";
+        mobileMessage.style.background = 'linear-gradient(145deg,rgb(247, 2, 255),rgb(0, 98, 255))';
         mobileMessage.style.color = "white";
         mobileMessage.style.display = "flex";
         mobileMessage.style.alignItems = "center";
